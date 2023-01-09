@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
+import 'package:pharmacy_customer_app/constants.dart';
 
 class Pharmacy_Card extends StatelessWidget {
   final data;
@@ -7,11 +9,11 @@ class Pharmacy_Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/pharm1.jpg',
+                image: NetworkImage(
+                  data["img"],
                 ),
                 fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(32),
@@ -28,22 +30,40 @@ class Pharmacy_Card extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 120.0),
                 child: Container(
+                  padding: const EdgeInsets.all(5),
                   height: 60,
                   width: 250,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.white.withOpacity(0.95),
-                          Colors.black.withOpacity(0.4),
-                          Colors.white.withOpacity(0.95),
-                        ],
-                      ),
+                  decoration: const BoxDecoration(
+                      color: GlobalVars.kPrimaryColor,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(32),
                         topRight: Radius.circular(32),
                       )),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          data["title"],
+                          style: GlobalVars.kPharmHeaderBold,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              IconlyLight.location,
+                              color: Colors.black,
+                              size: 15,
+                            ),
+                            Text(
+                              data["loc"],
+                              style: GlobalVars.kSmallHeaderLight,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               )
             ]));

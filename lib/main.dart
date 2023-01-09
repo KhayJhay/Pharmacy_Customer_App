@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacy_customer_app/Introduction/onBoarding_page.dart';
-import 'package:pharmacy_customer_app/screens/home/Home_Screen.dart';
+import 'package:pharmacy_customer_app/screens/home/categoryPages/painRelief_Screen.dart';
 
 void main() {
   runApp(const MyApp());

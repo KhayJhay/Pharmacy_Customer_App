@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pharmacy_customer_app/screens/home/Home_Screen.dart';
+import 'package:pharmacy_customer_app/screens/Home_Screen.dart';
 class Sign_In_Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

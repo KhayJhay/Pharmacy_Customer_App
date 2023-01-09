@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pharmacy_customer_app/constants.dart';
-import 'package:pharmacy_customer_app/screens/home/allproduct.dart';
+import 'package:pharmacy_customer_app/screens/allproduct.dart';
+import 'package:pharmacy_customer_app/screens/favoritepage.dart';
+import 'package:iconly/iconly.dart';
+import 'package:pharmacy_customer_app/screens/home/cards/pharmCard.dart';
 import 'package:pharmacy_customer_app/screens/home/cards/pharmacy_card.dart';
-import 'package:pharmacy_customer_app/screens/home/favoritepage.dart';
-import 'package:pharmacy_customer_app/screens/home/notifications_screen.dart';
-import 'package:pharmacy_customer_app/screens/home/pharmacy_chat.dart';
-import 'package:pharmacy_customer_app/screens/home/userprofile.dart';
+import 'package:pharmacy_customer_app/screens/home/categoryPages/painRelief_Screen.dart';
+import 'package:pharmacy_customer_app/screens/notifications_screen.dart';
+import 'package:pharmacy_customer_app/screens/pharmacy_chat.dart';
+import 'package:pharmacy_customer_app/screens/userprofile.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../widgets/appBar_widget.dart';
+import 'home/cards/drugCard.dart';
 
 class Home_Screen extends StatefulWidget {
   const Home_Screen({Key? key}) : super(key: key);
@@ -16,13 +23,16 @@ class Home_Screen extends StatefulWidget {
 }
 
 class _Home_ScreenState extends State<Home_Screen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        drawer: NavigationDrawerWidget(),
+      backgroundColor: Colors.white,
+      drawer: NavigationDrawerWidget(),
+      /*
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black, size: 30),
           elevation: 0,
@@ -46,160 +56,263 @@ class _Home_ScreenState extends State<Home_Screen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: <Widget>[
-                //Search box for pharmacy
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: TextField(
-                      onChanged: (value) {},
-                      decoration: InputDecoration(
-                        hintText: "Search Pharmacy",
-                        contentPadding: EdgeInsets.all(10),
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: Color(0xFF359D97),
-                          size: 28,
-                        ),
-                        hintStyle: TextStyle(
-                            color: Color(0xFF359D97),
-                            fontFamily: 'Poppins-Light',
-                            fontSize: 22),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xFF359D97),
+        */
+      body: Stack(
+        children: [
+        Stack(
+          children: [
+            Container(
+              height: _height / 3.2,
+              width: _width,
+              decoration: BoxDecoration(
+                color: GlobalVars.kPrimaryColor,
+                borderRadius:
+                    BorderRadius.only(bottomRight: Radius.circular(50)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  appBarWidget(
+                    title: RichText(
+                      text: const TextSpan(
+                          text: "Hello, ",
+                          style: GlobalVars.kSmallHeaderLight,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Michael!',
+                              style: GlobalVars.kSmallHeaderBold,
+                            )
+                          ]),
+                    ),
+                    icon: IconlyLight.filter,
+                    widget: CircleAvatar(
+                      radius: 12,
+                      backgroundImage: AssetImage('assets/images/pic1.jpg'),
+                    ),
+                  ),
+                  SearchMed_Widget(),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 25, left: 20, right: 20),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 64,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset('assets/pngs/log1.png'),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            height: 64,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(
+                              'assets/pngs/log2.png',
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6),
+                            height: 64,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset('assets/pngs/log3.png'),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6),
+                            height: 64,
+                            width: 130,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset('assets/pngs/log4.png'),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            SizedBox(
-              height: 30,
+          ],
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: _width,
+            height: _height / 1.454,
+            decoration: BoxDecoration(
+              color: GlobalVars.kPrimaryColor,
             ),
-            //condition area
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 10.0, right: 10, top: 20, bottom: 30),
-              child: Container(
-                height: 175,
-                width: _width * 0.95,
-                decoration: BoxDecoration(
-                  color: Color(0xFFE8F3F3),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        spreadRadius: 3),
-                  ],
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Column(
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: _width,
+            height: _height / 1.454,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(50)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            "How are you \nfeeling?",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins-SemiBold',
-                                fontSize: 24),
-                          ),
+                        Text(
+                          "Category",
+                          style: GlobalVars.kMediumHeaderBold,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, top: 5),
-                          child: InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Pharmacy_Chat_Screen()));
-                            },
-                            child: Container(
-                              height: 42,
-                              width: 165,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF028F6F),
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color(0xFF54ABA2),
-                                      blurRadius: 8,
-                                      spreadRadius: 2),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Answer Here",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Poppins-SemiBold',
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
+                        Text(
+                          "View All",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Poppins-SemiBold',
+                            color: Colors.grey,
                           ),
                         )
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        bottom: 10,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  const buildCategories(),
+                  //condition area
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20, top: 20, bottom: 10),
+                    child: Container(
+                      height: 175,
+                      width: _width * 0.95,
+                      decoration: BoxDecoration(
+                        color: GlobalVars.kPrimaryColor.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              spreadRadius: 3),
+                        ],
                       ),
-                      child: Lottie.asset('assets/lotties/pharmacist.json'),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 12.0,
-                right: 12,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Top Pharmacies",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Poppins-SemiBold',
-                      color: Colors.black,
+                      child: Row(
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Text(
+                                    "We Get your drugs\nDelivered to you",
+                                    style: GlobalVars.kMediumHeaderLight),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20.0, top: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AllProduct()));
+                                  },
+                                  child: Container(
+                                    height: 42,
+                                    width: 165,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Purchase Now",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Poppins-Regular',
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10,
+                              bottom: 10,
+                            ),
+                            child:
+                                Lottie.asset('assets/lotties/fastdeliv.json'),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "View All",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins-SemiBold',
-                        color: Colors.grey,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15,
                     ),
-                  )
-                ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const <Widget>[
+                        Text(
+                          "Top Pharmacies",
+                          style: GlobalVars.kMediumHeaderBold,
+                        ),
+                        Text(
+                          "View All",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins-SemiBold',
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  buildTopPharm(context),
+                ]),
               ),
             ),
-            buildTopPharm(context),
-            buildNewMed(),
-            buildPopularMeds(),
-          ]),
-        ));
+          ),
+        ),
+      ]),
+    );
   }
 
   SizedBox buildTopPharm(BuildContext context) {
@@ -229,6 +342,7 @@ class _Home_ScreenState extends State<Home_Screen> {
     );
   }
 
+/*
   Container buildNewMed() {
     return Container(
       height: 240,
@@ -239,20 +353,16 @@ class _Home_ScreenState extends State<Home_Screen> {
           Padding(
             padding: const EdgeInsets.only(right: 24),
             child: Row(
-              children: <Widget>[
+              children: const <Widget>[
                 Text(
-                  "New Meds",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Poppins-SemiBold',
-                    color: Colors.black,
-                  ),
+                  "New Drugs",
+                  style: GlobalVars.kMediumHeaderBold,
                 ),
                 Spacer(),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 13,
           ),
           Container(
@@ -264,9 +374,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                   InkWell(
                     child: Container(
                       width: 140,
-                      margin: EdgeInsets.only(right: 16, bottom: 8),
+                      margin: const EdgeInsets.only(right: 16, bottom: 8),
                       decoration: BoxDecoration(
-                          color: Color(0xFFE8F3F3),
+                          color: const Color(0xFFE8F3F3),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -301,7 +411,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     "LUFAN FORTE",
                                     style: TextStyle(
@@ -363,7 +473,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     "JANFAN-2",
                                     style: TextStyle(
@@ -424,7 +534,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   "AMOXICILIN",
                                   style: TextStyle(
@@ -483,7 +593,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   "PRIMADOL",
                                   style: TextStyle(
@@ -542,7 +652,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   "CBO COMBO",
                                   style: TextStyle(
@@ -564,7 +674,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                   ),
                   Container(
                     width: 140,
-                    margin: EdgeInsets.only(right: 16, bottom: 8),
+                    margin: const EdgeInsets.only(right: 16, bottom: 8),
                     decoration: BoxDecoration(
                         color: Color(0xFFE8F3F3),
                         borderRadius: BorderRadius.circular(10),
@@ -601,7 +711,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   "LONART",
                                   style: TextStyle(
@@ -697,7 +807,7 @@ class _Home_ScreenState extends State<Home_Screen> {
           Padding(
             padding: const EdgeInsets.only(right: 24),
             child: Row(
-              children: <Widget>[
+              children: const <Widget>[
                 Text(
                   "Popular Meds",
                   style: TextStyle(
@@ -710,7 +820,7 @@ class _Home_ScreenState extends State<Home_Screen> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 13,
           ),
           Container(
@@ -722,9 +832,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                   InkWell(
                     child: Container(
                       width: 140,
-                      margin: EdgeInsets.only(right: 16, bottom: 8),
+                      margin: const EdgeInsets.only(right: 16, bottom: 8),
                       decoration: BoxDecoration(
-                          color: Color(0xFFE8F3F3),
+                          color: const Color(0xFFE8F3F3),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -759,7 +869,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     "LUFAN FORTE",
                                     style: TextStyle(
@@ -821,7 +931,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     "JANFAN-2",
                                     style: TextStyle(
@@ -845,9 +955,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                   ),
                   Container(
                     width: 140,
-                    margin: EdgeInsets.only(right: 16, bottom: 8),
+                    margin: const EdgeInsets.only(right: 16, bottom: 8),
                     decoration: BoxDecoration(
-                        color: Color(0xFFE8F3F3),
+                        color: const Color(0xFFE8F3F3),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -882,7 +992,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   "AMOXICILIN",
                                   style: TextStyle(
@@ -1141,6 +1251,315 @@ class _Home_ScreenState extends State<Home_Screen> {
                 ],
               ))
         ],
+      ),
+    );
+  }
+*/
+
+}
+
+class buildCategories extends StatelessWidget {
+  const buildCategories({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                InkWell(
+                  onTap: () => showPharmacyList(
+                    context,
+                    "Pain Relief Drugs",
+                    Column(
+                      children: PharmaciesNearbyList.map((value) {
+                        return PharmCard(
+                          data: value,
+                          press: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryDetailScreen(
+                                  cartTitle: "Pain Relief",
+                                  pharmName: "Letap pharmacy",
+                                  pharmWidget: Column(
+                                    children: PainReliefList.map((value) {
+                                      return DrugCard(
+                                        data: value,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              )),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  child: Container(
+                    height: 75,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: GlobalVars.kPrimaryColor,
+                      image: const DecorationImage(
+                        scale: 1.3,
+                        image: AssetImage(
+                          "assets/pngs/cat2.png",
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Pain  Reliefs",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                InkWell(
+                  onTap: () => showPharmacyList(
+                    context,
+                    "Cosmetic Products",
+                    Column(
+                      children: PharmaciesNearbyList.map((value) {
+                        return PharmCard(
+                          data: value,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  child: Container(
+                    height: 75,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: GlobalVars.kPrimaryColor,
+                      image: const DecorationImage(
+                        scale: 1.5,
+                        image: AssetImage(
+                          "assets/pngs/cat4.png",
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Cosmetics",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: GlobalVars.kPrimaryColor,
+                    image: const DecorationImage(
+                      scale: 1.5,
+                      image: AssetImage(
+                        "assets/pngs/cat6.png",
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Feminine Hygiene",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: GlobalVars.kPrimaryColor,
+                    image: const DecorationImage(
+                      scale: 1.5,
+                      image: AssetImage(
+                        "assets/pngs/cat7.png",
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Handwashers",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: GlobalVars.kPrimaryColor,
+                    image: const DecorationImage(
+                      scale: 1.5,
+                      image: AssetImage(
+                        "assets/pngs/cat8.png",
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Ailment",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: GlobalVars.kPrimaryColor,
+                    image: const DecorationImage(
+                      scale: 1.5,
+                      image: AssetImage(
+                        "assets/pngs/cat9.png",
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Baby Care",
+                  style: GlobalVars.kSmallHeaderSemi,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showPharmacyList(BuildContext context, String title, Widget pharmList) {
+    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (context) {
+          return Container(
+            height: _height * 2,
+            width: _width,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25))),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      title,
+                      style: GlobalVars.kMediumHeaderBold,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      "Pharmacies near by",
+                      style: GlobalVars.kSmallHeaderBold,
+                    ),
+                  ),
+                  pharmList,
+                ],
+              ),
+            ),
+          );
+        });
+  }
+}
+
+class SearchMed_Widget extends StatelessWidget {
+  const SearchMed_Widget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: Container(
+        padding: EdgeInsets.all(8),
+        height: 50,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(25)),
+        child: TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            suffixIcon: Icon(
+              IconlyLight.search,
+              color: Colors.grey,
+            ),
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            contentPadding: EdgeInsets.all(10),
+            hintText: "Search for drugs...",
+            hintStyle: TextStyle(
+                fontSize: 14, color: Colors.grey, fontFamily: 'Poppins-Light'),
+          ),
+        ),
       ),
     );
   }
